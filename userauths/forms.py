@@ -59,23 +59,30 @@ class UserRegisterForm(UserCreationForm):
         return password1
     
     def clean_birth_date(self):
-        cleaned_data = super().clean()
-        birth_date = cleaned_data.get('birth_date')
+        birth_date = self.cleaned_data.get('birth_date')
 
         if not birth_date:
             raise forms.ValidationError('Please select a birth date.')
 
-        # Check if the birth date is not in the future
+        if isinstance(birth_date, str):
+            try:
+                # Chuyển đổi birth_date từ chuỗi sang đối tượng datetime.date
+                birth_date = datetime.date.fromisoformat(birth_date)
+            except ValueError:
+                raise forms.ValidationError('Invalid date format.')
+        elif not isinstance(birth_date, datetime.date):
+            raise forms.ValidationError('Invalid date format.')
+
+        # Kiểm tra nếu ngày sinh không phải là tương lai
         if birth_date > timezone.now().date():
             raise forms.ValidationError('The birth date cannot be in the future.')
 
-        # Check if the birth date is not before 1924
+        # Kiểm tra nếu ngày sinh không trước năm 1924
         earliest_date = datetime.date(1924, 1, 1)
         if birth_date < earliest_date:
             raise forms.ValidationError('The birth date cannot be before 1924.')
 
-        cleaned_data['birth_date'] = birth_date
-        return cleaned_data
+        return birth_date
 
     def clean_first_name(self):
         first_name = self.cleaned_data.get('first_name').strip()
