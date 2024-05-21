@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/main.css' %}">
+    <script src="https://kit.fontawesome.com/8f6d25a064.js" crossorigin="anonymous"></script>
+    <title>User Management</title>
+    <script>
+        // Hàm để định dạng ngày tháng từ dạng 'ddmmyyyy' thành 'dd/mm/yyyy'
+        function formatBirthDate() {
+            var input = document.getElementById("id_birth_date_text");
+            var value = input.value;
+            if (value.length === 8) {
+                var formattedValue = value.substr(0, 2) + "/" + value.substr(2, 2) + "/" + value.substr(4, 4);
+                input.value = formattedValue;
+            }
+        }
+    </script>
+</head>
+<body>
+    <main class="table" id="customers_table">
+        <section class="table__header">
+            <h1>
+                <a href="{% url 'core:index' %}">Customer's Management</a>
+            </h1>
+            <div class="input-group">
+                <form action="{% url 'core:search' %}" method="GET">
+                    <input type="search" id="searchInput" placeholder="Search Data..." name="q">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="export__file">
+                <label for="export-file"  title="Export File"><i class="fa-solid fa-gear"></i></label>
+                <input type="checkbox" id="export-file">
+                <div class="export__file-options">
+                    {% if request.user.is_authenticated %}
+                    <label>{{request.user.username}}</label>
+                    {% else %}
+                    <label>Account</label>
+                    {% endif %}
+
+                    {% if request.user.is_authenticated %}
+                    <label for="export-file" id="toPDF"><a href="{% url 'core:CreateUser' %}">Create User</a></label>
+                    <label for="export-file" id="toPDF"><a href="{% url 'userauths:sign-out' %}">Sign out</a></label>
+                    {% else %}
+                    <label for="export-file" id="toPDF"><a href="{% url 'userauths:sign-in' %}">Register</a></label>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        {% block content %}
+        {% endblock content %}
+    </main>
+    <script>
+        // Gọi hàm formatBirthDate khi có sự kiện onblur (khi người dùng rời khỏi trường nhập liệu)
+        document.getElementById("id_birth_date_text").addEventListener("blur", formatBirthDate);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,50 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+<section class="table__body">
+    <table>
+        <thead>
+            <tr>
+                <th> Customer </th>
+                {% if user.is_authenticated %}
+                    {% if perms.auth.change_user and perms.auth.delete_user %}
+                <th> Email </th>
+                    {% endif %}
+                {% endif %}
+                <th> Date Created </th>
+                {% if user.is_authenticated %}
+                    {% if perms.auth.change_user and perms.auth.delete_user %}
+                <th colspan="2">Action</th>
+                    {% endif %}
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td> {{ user.username }}</td>
+                {% if user.is_authenticated %}
+                {% if perms.auth.change_user and perms.auth.delete_user %}
+                <td>{{ user.email }}</td>
+                {% endif %}
+                {% endif %}
+                <td> {{ user.date_joined }} </td>
+                {% if user.is_authenticated %}
+                {% if perms.auth.change_user and perms.auth.delete_user %}
+            <td>
+                <a href="{% url 'UpdateUser' pk=user.pk %}">Edit</a>
+                <span>|</span>
+                <a href="{% url 'DeleteUser' pk=user.pk %}">Delete</a>
+            </td>
+                {% endif %}
+            {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No results found for "{{ query }}".</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock content %}

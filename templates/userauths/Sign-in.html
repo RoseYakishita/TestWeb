@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+<title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link rel="stylesheet" href="{% static 'assets/css/log-reg.css' %}"/>
+<!-- //Custom Theme files -->
+<!-- web font -->
+<link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+<!-- //web font -->
+</head>
+<body>
+	<!-- main -->
+	<div class="main-w3layouts wrapper">
+		<h1>Login Form</h1>
+		<div class="main-agileinfo">
+			<div class="agileits-top">
+				
+				<form action="{% url 'userauths:sign-in' %}" method="post">
+					{% csrf_token %}
+					{% if messages %}
+					<div id="messages">
+						{% for message in messages %}
+						<div class="alert {{ message.tags }}">
+							{{ message }}
+						</div>
+						{% endfor %}
+					</div>
+					{% endif %}
+					<div class="input-box">
+						<input class="text" type="text" name="email" placeholder="Enter your email" required="">
+					</div>
+					<div class="input-box">
+						<input class="text" type="password" name="password" placeholder="Enter your password" required="">
+					</div>
+					<input type="submit" name="login" value="Sumbit">
+				</form>
+				<p>Don't have an Account? <a href="{% url 'userauths:sign-up' %}"> Register Now!</a></p>
+			</div>
+		</div>
+		<!-- copyright -->
+		<div class="colorlibcopy-agile">
+			<p>© 2018 Colorlib Signup Form. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a> and edited by ...</p>
+		</div>
+		<script>
+            setTimeout(function() {
+                var messages = document.getElementById('messages');
+                if (messages) {
+                    messages.style.display = 'none';
+                }
+            }, 4000); // 5000 milliseconds = 5 seconds
+        </script>
+		<!-- //copyright -->
+		<ul class="colorlib-bubbles">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<!-- //main -->
+</body>
+</html>

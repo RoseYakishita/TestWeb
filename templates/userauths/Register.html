@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+<title>Register</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link rel="stylesheet" href="{% static 'assets/css/log-reg.css' %}"/>
+<!-- //Custom Theme files -->
+<!-- web font -->
+<link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+<!-- //web font -->
+</head>
+<body>
+	<!-- main -->
+	<div class="main-w3layouts wrapper">
+		<h1>SignUp Form</h1>
+		<div class="main-agileinfo">
+			<div class="agileits-top">
+				<form action="{% url 'userauths:sign-up' %}" method="post">
+          {% csrf_token %}
+					<!-- <input class="text" type="text" name="Username" placeholder="Username" required=""> -->
+          <div class="input-box">
+          {{ form.username }}       
+          </div>
+          {% if form.username.errors %}
+          <div class="error">{{ form.username.errors }}</div>
+          {% endif %}
+					<!-- <input class="text" type="text" name="Username" placeholder="Username" required=""> -->
+          <div class="input-box">
+          {{ form.first_name }}       
+          </div>
+          {% if form.first_name.errors %}
+          <div class="error">{{ form.first_name.errors }}</div>
+          {% endif %}
+					<!-- <input class="text" type="text" name="Username" placeholder="Username" required=""> -->
+          <div class="input-box">
+          {{ form.last_name }}       
+          </div>
+          {% if form.last_name.errors %}
+          <div class="error">{{ form.last_name.errors }}</div>
+          {% endif %}
+					<!-- <input class="text email" type="email" name="email" placeholder="Email" required=""> -->
+          <div class="input-box">
+          {{ form.email }}
+          </div>
+          {% if form.email.errors %}
+          <div class="error">{{ form.email.errors }}</div>
+          {% endif %}
+					<!-- <input class="text email" type="email" name="email" placeholder="Email" required=""> -->
+          <div class="input-box">
+          {{ form.phone_number }}
+          </div>
+          {% if form.phone_number.errors %}
+          <div class="error">{{ form.phone_number.errors }}</div>
+          {% endif %}
+					<!-- <input class="text email" type="email" name="email" placeholder="Email" required=""> -->
+          <div class="input-box">
+          {{ form.address }}
+          </div>
+          {% if form.address.errors %}
+          <div class="error">{{ form.address.errors }}</div>
+          {% endif %}
+					<!-- <input class="text email" type="email" name="email" placeholder="Email" required=""> -->
+          <div class="input-box">
+          <p for="birth_date_picker">Birth date: </p>{{ form.birth_date_picker }}
+          <p for="birth_date_text">Birth date: </p>{{ form.birth_date_text }}
+          </div>
+          {% if form.birth_date.errors %} 
+          <div class="error">{{ form.birth_date.errors }}</div>
+          {% endif %}
+					<!-- <input class="text" type="password" name="password" placeholder="Password" required=""> -->
+          <div class="input-box">
+          {{ form.password1 }}
+          </div>
+          {% if form.password1.errors %}
+          <div class="error">{{ form.password1.errors }}</div>
+          {% endif %}
+					<!-- <input class="text w3lpass" type="password" name="password" placeholder="Confirm Password" required=""> -->
+          <div class="input-box">
+          {{ form.password2 }}
+          </div>
+          {% if form.password2.errors %}
+          <div class="error">{{ form.password2.errors }}</div>
+          {% endif %}
+					<div class="wthree-text">
+						<label class="anim">
+							<input type="checkbox" class="checkbox" required="">
+							<span>I Agree To The Terms & Conditions</span>
+						</label>
+						<div class="clear"> </div>
+					</div>
+					<input type="submit" name="register" value="Submit">
+				</form>
+				<p>Already have an Account? <a href="{% url 'userauths:sign-in' %}"> Login Now!</a></p>
+			</div>
+		</div>
+		<!-- copyright -->
+		<div class="colorlibcopy-agile">
+			<p>© 2018 Colorlib Signup Form. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a> and edited by ...</p>
+		</div>
+		<!-- //copyright -->
+		<ul class="colorlib-bubbles">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<!-- //main -->
+</body>
+</html>
