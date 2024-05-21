@@ -1,3 +1,5 @@
+from django.utils import timezone
+import datetime
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
@@ -11,8 +13,7 @@ class UserRegisterForm(UserCreationForm):
     last_name = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Last Name"}), max_length=30)
     phone_number = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Phone Number"}), max_length=20, required=False)
     address = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Address"}), max_length=255, required=False)
-    birth_date_picker = forms.DateField(widget=forms.DateInput(attrs={"placeholder": "Select Birth Date", "type": "date"}), required=False)    
-    birth_date_text = forms.CharField(widget=forms.TextInput(attrs={"placeholder": "Enter Birth Date (YYYY-MM-DD)"}), max_length=10, required=False)
+    birth_date = forms.DateField(widget=forms.DateInput(attrs={"placeholder": "Select Birth Date", "type": "date"}), required=False)
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder": "Password"}))
     password2 = forms.CharField(widget=forms.PasswordInput(attrs={"placeholder": "Confirm Password"}))
     
@@ -57,26 +58,23 @@ class UserRegisterForm(UserCreationForm):
 
         return password1
     
-    def clean_birthdate(self):
+    def clean_birth_date(self):
         cleaned_data = super().clean()
-        birth_date_picker = cleaned_data.get('birth_date_picker')
-        birth_date_text = cleaned_data.get('birth_date_text')
+        birth_date = cleaned_data.get('birth_date')
 
-        if birth_date_picker and birth_date_text:
-            raise forms.ValidationError('Please fill only one of the birth date fields.')
+        if not birth_date:
+            raise forms.ValidationError('Please select a birth date.')
 
-        if not birth_date_picker and not birth_date_text:
-            raise forms.ValidationError('Please fill at least one of the birth date fields.')
+        # Check if the birth date is not in the future
+        if birth_date > timezone.now().date():
+            raise forms.ValidationError('The birth date cannot be in the future.')
 
-        if birth_date_text:
-            try:
-                cleaned_data['birth_date'] = forms.DateField().to_python(birth_date_text)
-            except forms.ValidationError:
-                raise forms.ValidationError('Enter a valid date in the format YYYY-MM-DD.')
+        # Check if the birth date is not before 1924
+        earliest_date = datetime.date(1924, 1, 1)
+        if birth_date < earliest_date:
+            raise forms.ValidationError('The birth date cannot be before 1924.')
 
-        if birth_date_picker:
-            cleaned_data['birth_date'] = birth_date_picker
-
+        cleaned_data['birth_date'] = birth_date
         return cleaned_data
 
     def clean_first_name(self):
@@ -90,6 +88,12 @@ class UserRegisterForm(UserCreationForm):
         if not re.match(r'^[a-zA-Z]+$', last_name):
             raise forms.ValidationError("Last name should only contain letters and no spaces.")
         return last_name
+    
+    def clean_address(self):
+        address = self.cleaned_data.get('address').strip()
+        if not address:
+            raise forms.ValidationError("Address cannot be empty.")
+        return address
     
     class Meta:
         model = User

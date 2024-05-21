@@ -65,8 +65,7 @@
           {% endif %}
 					<!-- <input class="text email" type="email" name="email" placeholder="Email" required=""> -->
           <div class="input-box">
-          <p for="birth_date_picker">Birth date: </p>{{ form.birth_date_picker }}
-          <p for="birth_date_text">Birth date: </p>{{ form.birth_date_text }}
+          <p for="birth_date_picker">Birth date: </p> {{ form.birth_date }}
           </div>
           {% if form.birth_date.errors %} 
           <div class="error">{{ form.birth_date.errors }}</div>
