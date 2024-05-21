@@ -6,6 +6,7 @@ from userauths.forms import CreateUserForm, UserRegisterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -32,22 +33,16 @@ class DeleteUser(LoginRequiredMixin, DeleteView):
 
 def search_view(request):
     query = request.GET.get("q")
-    users = User.objects.filter(username__icontains=query).order_by("-date_joined")
-    items_per_page = 10
-    paginator = Paginator(users, items_per_page)
-
-    # Lấy số trang từ tham số truy vấn (nếu có), mặc định là 1
-    page_number = request.GET.get('page', 1)
-    try:
-        page_obj = paginator.page(page_number)
-    except PageNotAnInteger:
-        page_obj = paginator.page(1)
-    except EmptyPage:
-        page_obj = paginator.page(paginator.num_pages)
+    
+    if not query:
+        # Add an error message if the query is empty
+        messages.error(request, "Search query cannot be empty.")
+        users = User.objects.none()
+    else:
+        users = User.objects.filter(username__icontains=query).order_by("-date_joined")
 
     context = {
-        "users": page_obj.object_list,
+        "users": users,
         "query": query,
-        "page_obj": page_obj,
     }
     return render(request, "core/search.html", context)

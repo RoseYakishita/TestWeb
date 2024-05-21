@@ -79,6 +79,18 @@ class UserRegisterForm(UserCreationForm):
 
         return cleaned_data
 
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name').strip()
+        if not re.match(r'^[a-zA-Z]+$', first_name):
+            raise forms.ValidationError("First name should only contain letters and no spaces.")
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name').strip()
+        if not re.match(r'^[a-zA-Z]+$', last_name):
+            raise forms.ValidationError("Last name should only contain letters and no spaces.")
+        return last_name
+    
     class Meta:
         model = User
         fields = [
