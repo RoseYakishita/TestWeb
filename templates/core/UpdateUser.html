@@ -54,11 +54,14 @@
                     </tr>
                     <tr>
                         <td><strong>Birth Date</strong></td>
-                        <td><input type="text" id="birth_date" name="birth_date" value="{{form.birth_date.value}}" required></td>
-                        {% if form.birth_date.errors %}
-                        <div class="error">{{ form.birth_date.errors }}</div>
-                        {% endif %}
+                        <td>
+                            <input type="date" id="birth_date" name="birth_date" value="{{ form.instance.birth_date|date:'Y-m-d' }}" required>
+                            {% if form.birth_date.errors %}
+                                <div class="error">{{ form.birth_date.errors }}</div>
+                            {% endif %}
+                        </td>
                     </tr>
+                    
                     <tr>
                         <td><strong>Password</strong></td>
                         <td><input type="password" id="id_password" name="password" required></td>
