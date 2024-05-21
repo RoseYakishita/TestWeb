@@ -32,26 +32,24 @@
                 </div>
             </div>
             <div class="export__file">
-                <label for="export-file"  title="Export File"><i class="fa-solid fa-gear"></i></label>
+                <label for="export-file" title="Export File"><i class="fa-solid fa-gear"></i></label>
                 <input type="checkbox" id="export-file">
                 <div class="export__file-options">
                     {% if request.user.is_authenticated %}
-                    <label>{{request.user.username}}</label>
+                        <label>{{ request.user.username }}</label>
+                        {% if request.user.is_superuser %}
+                            <label for="export-file" id="toPDF"><a href="{% url 'core:CreateUser' %}">Create User</a></label>
+                        {% endif %}
+                        <label for="export-file" id="toPDF"><a href="{% url 'userauths:sign-out' %}">Sign out</a></label>
+                        <!-- Hiển thị nút Edit Profile -->
+                        <label for="edit-profile" id="toPDF"><a href="{% url 'userauths:edit-profile' %}">Edit Profile</a></label>
                     {% else %}
-                    <label>Account</label>
+                        <label>Account</label>
+                        <label for="export-file" id="toPDF"><a href="{% url 'userauths:sign-in' %}">Register</a></label>
                     {% endif %}
-
-                    {% if request.user.is_authenticated %}
-                    {% if request.user.is_superuser %}
-                        <label for="export-file" id="toPDF"><a href="{% url 'core:CreateUser' %}">Create User</a></label>
-                    {% endif %}
-                    <label for="export-file" id="toPDF"><a href="{% url 'userauths:sign-out' %}">Sign out</a></label>
-                {% else %}
-                    <label for="export-file" id="toPDF"><a href="{% url 'userauths:sign-in' %}">Register</a></label>
-                {% endif %}
-                
                 </div>
             </div>
+            
         </section>
         {% block content %}
         {% endblock content %}

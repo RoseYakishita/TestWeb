@@ -17,18 +17,18 @@ class CreateUser(LoginRequiredMixin, CreateView):
     model = User
     form_class = CreateUserForm
     template_name = 'core/CreateUser.html'
-    success_url = reverse_lazy('core/index')
+    success_url = reverse_lazy('core:index')
     
 class UpdateUser(LoginRequiredMixin, UpdateView):
     model = User
     fields = ['username','email', 'first_name', 'last_name', 'phone_number', 'address', 'password']
     template_name = 'core/UpdateUser.html'
-    success_url = reverse_lazy('core/index')
+    success_url = reverse_lazy('core:index')
 
 class DeleteUser(LoginRequiredMixin, DeleteView):
     model = User
-    template_name = 'core:DeleteUser.html'
-    success_url = reverse_lazy('core/index')
+    template_name = 'core/DeleteUser.html'
+    success_url = reverse_lazy('core:index')
 
 
 def search_view(request):

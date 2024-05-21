@@ -1,0 +1,81 @@
+
+{% extends 'partials/base.html' %}
+{% load static %}
+        {% block content %}
+        <section class="table__body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+            <table>
+                <tbody>
+                    <tr>
+                        <td colspan="2"><strong>Edit Profile</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>User Name</strong></td>
+                        <td><input type="text" id="id_username" name="username" value="{{form.username.value}}" required></td>
+                        {% if form.username.errors %}
+                        <div class="error">{{ form.username.errors }}</div>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td><strong>Email</strong></td>
+                        <td><input type="email" id="id_email" name="email" value="{{form.email.value}}" required></td>
+                        {% if form.email.errors %}
+                        <div class="error">{{ form.email.errors }}</div>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td><strong>First Name</strong></td>
+                        <td><input type="text" id="id_first_name" name="first_name" value="{{form.first_name.value}}" required></td>
+                        {% if form.first_name.errors %}
+                        <div class="error">{{ form.first_name.errors }}</div>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td><strong>Last Name</strong></td>
+                        <td><input type="text" id="id_last_name" name="last_name" value="{{form.last_name.value}}" required></td>
+                        {% if form.last_name.errors %}
+                        <div class="error">{{ form.last_name.errors }}</div>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td><strong>Phone Number</strong></td>
+                        <td><input type="text" id="phone_number" name="phone_number" value="{{ form.phone_number.value }}" required></td>
+                        {% if form.phone_number.errors %}
+                        <div class="error">{{ form.phone_number.errors }}</div>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td><strong>Address</strong></td>
+                        <td><input type="text" id="address" name="address" value="{{form.address.value}}" required></td>
+                        {% if form.address.errors %}
+                        <div class="error">{{ form.address.errors }}</div>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <td><strong>Birth Date</strong></td>
+                        <td>
+                            <input type="date" id="birth_date" name="birth_date" value="{{ form.instance.birth_date|date:'Y-m-d' }}" required>
+                            {% if form.birth_date.errors %}
+                                <div class="error">{{ form.birth_date.errors }}</div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td><strong>Password</strong></td>
+                        <td><input type="password" id="id_password" name="password" required></td>
+                        {% if form.password.errors %}
+                        <div class="error">{{ form.password.errors }}</div>
+                        {% endif %}
+                    </tr>
+
+                    <tr>
+                        <td colspan="2"><button type="submit">Update</button></td>
+                        
+                    </tr>
+                </tbody>
+            </table>
+            </form>
+        </section>
+        {% endblock content %}

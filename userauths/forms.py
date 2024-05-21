@@ -174,3 +174,12 @@ class CreateUserForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'phone_number', 'address', 'birth_date']
+
+    def clean_password(self):
+        # Không thay đổi mật khẩu trong form này
+        return self.cleaned_data.get('password')

@@ -1,7 +1,11 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login, logout
-from userauths.forms import User, UserRegisterForm
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from userauths.forms import ProfileForm, User, UserRegisterForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import UpdateView
+from django.urls import reverse_lazy
 
 # Create your views here.
 def register_view(request):
@@ -60,3 +64,25 @@ def logout_view(request):
     return redirect("core:index")
 
 
+@login_required
+def profile_update(request):
+    profile = request.user  # Lấy thông tin người dùng hiện tại
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            new_form = form.save(commit=False)
+            new_form.user = request.user
+            new_form.save()
+            update_session_auth_hash(request, request.user)  # Giữ người dùng đăng nhập sau khi cập nhật
+            messages.success(request, "Profile Updated Successfully.")
+            return redirect("core:index")  # Điều hướng về trang dashboard sau khi cập nhật thành công
+    else:
+        form = ProfileForm(instance=profile)
+
+    context = {
+        "form": form,
+        "profile": profile,
+    }
+
+    return render(request, "userauths/Edit-profile.html", context)
