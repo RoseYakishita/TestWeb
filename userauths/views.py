@@ -63,7 +63,6 @@ def logout_view(request):
     messages.success(request, "You've logged out.")
     return redirect("core:index")
 
-
 @login_required
 def profile_update(request):
     profile = request.user  # Lấy thông tin người dùng hiện tại
