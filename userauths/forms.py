@@ -41,6 +41,13 @@ class UserRegisterForm(UserCreationForm):
         if not email.endswith('@gmail.com') and not email.endswith('@outlook.com'):
             raise forms.ValidationError('Email must end with @gmail.com or @outlook.com.')
 
+        # Lấy phần tên email trước '@'
+        username_part = email.split('@')[0]
+
+        # Kiểm tra độ dài phần tên email trước '@'
+        if len(username_part) > 30:
+            raise forms.ValidationError('Email username part must be 30 characters or less.')
+
         # Kiểm tra xem email có chứa ký tự đặc biệt không
         if any(char in email for char in r"""!#$%&'*+/=?^_`{|}~"""):
             raise forms.ValidationError('Email should not contain special characters.')
@@ -50,11 +57,17 @@ class UserRegisterForm(UserCreationForm):
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1', '')
 
+        # Kiểm tra xem mật khẩu có chứa khoảng trắng không
         if ' ' in password1:
             raise forms.ValidationError('Password should not contain spaces.')
 
+        # Kiểm tra xem mật khẩu có bắt đầu bằng khoảng trắng không
         if password1 and password1[0] == ' ':
             raise forms.ValidationError('Password should not start with a space.')
+
+        # Kiểm tra xem mật khẩu có chứa ký tự '>' hoặc '<' không
+        if '>' in password1 or '<' in password1:
+            raise forms.ValidationError('Password should not contain ">" or "<" characters.')
 
         return password1
     
